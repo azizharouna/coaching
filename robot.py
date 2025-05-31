@@ -37,6 +37,9 @@ builder.add_node("detect_mess", detect_mess_function)
 builder.add_node("plan_route", plan_route_function)
 builder.add_node("execute_clean", execute_clean_function) 
 
+#s setting the entry point
+builder.set_entry_point("detect_mess")
+
 
 # Adding the edges
 builder.add_edge("detect_mess", "plan_route")
