@@ -1,4 +1,4 @@
-# === NODE/EDGE CERTIFIED KILL PROTOCOL ===
+# === NODE/EDGE CERTIFIED KILL PROTOCOL === 
 import random
 from langgraph.graph import StateGraph, END
 
@@ -37,13 +37,16 @@ builder.add_node("detect_mess", detect_mess_function)
 builder.add_node("plan_route", plan_route_function)
 builder.add_node("execute_clean", execute_clean_function) 
 
-#s setting the entry point
-builder.set_entry_point("detect_mess")
-
 
 # Adding the edges
 builder.add_edge("detect_mess", "plan_route")
 builder.add_edge("plan_route", "execute_clean")
+builder.add_edge( "execute_clean", END) # TERMINAL STATE
+
+#s setting the entry point
 builder.set_entry_point("detect_mess")
 
-graph = builder.compile()
+# ---- LAUNCH SEQUENCE ----#
+cleaning_bot = builder.compile()  # sometimes  graph = builder.compile()
+
+cleaning_bot.invoke(RobotState()) # FIRE!
