@@ -41,4 +41,8 @@ workflow.add_node("plan_route", plan_route_function)
 workflow.add_node("execute_clean", execute_clean_function) 
 
 
-
+#adding the edges
+workflow.add_edge("detect_mess", "plan_route")
+workflow.add_edge("plan_route", "execute_clean")
+workflow.set_entry_point("detect_mess")
+graph = workflow.compile()
