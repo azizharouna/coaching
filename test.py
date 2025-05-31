@@ -1,11 +1,12 @@
+# === NODE/EDGE CERTIFIED KILL PROTOCOL ===
+import random
+from langgraph.graph import StateGraph, END
 
+class RobotState:
+    mess_detected: bool = False
+    route_planned: bool = False
 
-%reset
-
-
-from langgraph.graph import StateGraph
-
-
+# NODES = FUNCTIONS
 def detect_mess_function(state):
     # DUMMY LOGIC: ALWAYS DETECTS MESS (REPLACE LATER)
     state.mess_detected = True
@@ -19,30 +20,27 @@ def plan_route_function(state):
 
 def execute_clean_function(state):
     # DUMMY ACTION: PRETEND TO CLEAN (HARDWARE INTEGRATION LATER)
-    print(f"⚡ ZAPPING MESS at {random_coordinates()}!")
+    print(f"🚀 LASER-CLEANING {random_coordinates()} !")
     return state
 
-# UTILITY (PASTE THIS TOO)
-def random_coordinates():
+# ---- UTILITIES ----
+def random_coordinates():  # <-- MISSING WEAPON DEPLOYED
     return f"[{random.randint(0,10)}, {random.randint(0,10)}]"
 
 
-
-class RobotState:
-    mess_detected: bool = False
-    route_planned: bool = False
-
-workflow = StateGraph(RobotState)
+# ---- GRAPH ASSEMBLY ----
+builder = StateGraph(RobotState)
 
 
 # Adding nodes
-workflow.add_node("detect_mess", detect_mess_function)
-workflow.add_node("plan_route", plan_route_function)
-workflow.add_node("execute_clean", execute_clean_function) 
+builder.add_node("detect_mess", detect_mess_function)
+builder.add_node("plan_route", plan_route_function)
+builder.add_node("execute_clean", execute_clean_function) 
 
 
-#adding the edges
-workflow.add_edge("detect_mess", "plan_route")
-workflow.add_edge("plan_route", "execute_clean")
-workflow.set_entry_point("detect_mess")
-graph = workflow.compile()
+# Adding the edges
+builder.add_edge("detect_mess", "plan_route")
+builder.add_edge("plan_route", "execute_clean")
+builder.set_entry_point("detect_mess")
+
+graph = builder.compile()
