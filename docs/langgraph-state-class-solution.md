@@ -1,6 +1,62 @@
 # 🧠 LangGraph State Class – Fixing `TypeError: RobotState() takes no arguments`
 
-## 🔍 Problem
+
+
+### **Mnemosyne's Dual Coding Response**
+
+**1. Core Requirements Visualization**
+*LangGraph's class requirements as a Mermaid diagram (10-word summary: "Mutable annotated class with kwargs constructor")*
+
+```mermaid
+classDiagram
+    class LangGraphCompatible {
+        +mutable: bool
+        +type_annotations: bool
+        +__init__(**kwargs)
+    }
+```
+
+**2. Instantiation Process**
+*Why class diagram? Because we're modeling structural requirements. Here's the sequence:*
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant LangGraph
+    User->>LangGraph: create_instance(mutable=True, type_annotations=True)
+    LangGraph-->>User: ValidatedClass()
+```
+
+**3. Validation Flow**
+*Enhanced with error handling for non-compliant classes:*
+
+```mermaid
+graph TD
+    A[Input Class] --> B{Has type annotations?}
+    B -->|Yes| C{Mutable?}
+    B -->|No| D[Reject]
+    C -->|Yes| E[Accept]
+    C -->|No| D
+```
+
+**Design Rationale:**
+The decision diamond pattern visually encodes LangGraph's two-step validation logic. To show default kwargs, we'd add:
+
+```mermaid
+classDiagram
+    class RobotState {
+        +mess_detected: bool = false
+        +route_planned: bool = false
+    }
+```
+
+*Key Relationships Shown:*
+- Class structure → Requirements
+- Sequence → Instantiation process
+- Flowchart → Validation logic
+
+##  Problem (Linked to Diagrams)
+Refer to the validation flowchart above - this error occurs when classes fail the first diamond check (type annotations).
 
 When running a LangGraph workflow, you may encounter the following error:
 
