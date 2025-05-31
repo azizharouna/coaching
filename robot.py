@@ -1,8 +1,9 @@
 # === NODE/EDGE CERTIFIED KILL PROTOCOL === 
 import random
 from langgraph.graph import StateGraph, END
+from pydantic import BaseModel  # <-- CRITICAL MISSING IMPORT
 
-class RobotState:
+class RobotState(BaseModel):  # <-- MUST INHERIT BaseModel
     mess_detected: bool = False
     route_planned: bool = False
 
